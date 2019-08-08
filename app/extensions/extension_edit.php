@@ -123,6 +123,7 @@
 			$dial_string = $_POST["dial_string"];
 			$enabled = $_POST["enabled"];
 			$description = $_POST["description"];
+			$site_uuid = $_POST["site_uuid"];
 
 			$voicemail_id = $extension;
 			if (permission_exists('number_alias') && strlen($number_alias) > 0) {
@@ -388,6 +389,7 @@
 									}
 									$array["extensions"][$i]["enabled"] = $enabled;
 									$array["extensions"][$i]["description"] = $description;
+									$array["extensions"][$i]["site_uuid"] = $site_uuid;
 
 							}
 
@@ -674,6 +676,7 @@
 			$dial_string = $row["dial_string"];
 			$enabled = $row["enabled"];
 			$description = $row["description"];
+			$site_uuid = $row["site_uuid"];
 		}
 		unset ($prep_statement);
 
@@ -767,6 +770,14 @@
 	$prep_statement->execute();
 	$users = $prep_statement->fetchAll(PDO::FETCH_NAMED);
 	unset($sql, $prep_statement);
+
+//get the sites
+        $sql = "select * from v_sites ";
+	$sql .= "order by sitename asc ";
+        $prep_statement = $db->prepare(check_sql($sql));
+        $prep_statement->execute();
+        $sites = $prep_statement->fetchAll(PDO::FETCH_ASSOC);
+        unset ($sql, $prep_statement);
 
 //get the destinations
 	$sql = "select * from v_destinations ";
@@ -964,6 +975,29 @@
 		echo "			<br />\n";
 		echo "		</td>";
 		echo "	</tr>";
+	}
+
+    if (permission_exists('site_edit')) {
+        echo "  <tr>";
+        echo "          <td class='vncell' valign='top'>".$text['label-sites']."</td>";
+        echo "          <td class='vtable'>";
+        echo "                  <select name='site_uuid' id='site_uuid' class='formfld' style='width: auto;'>\n";
+        foreach($sites as $field) {
+                if ($field['site_uuid'] == $site_uuid) {
+                        echo "    <option value='".$field['site_uuid']."' selected='selected'>".$field['sitename']."</option>\n";
+                }
+                else{
+
+                        echo "    <option value='".$field['site_uuid']."'>".$field['sitename']."</option>\n";
+                }
+        }
+        echo "                  </select>";
+
+        echo "                  <br>\n";
+        echo "                  ".$text['description-site_list']."\n";
+        echo "                  <br />\n";
+        echo "          </td>";
+        echo "  </tr>";
 	}
 
 	if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails')) {

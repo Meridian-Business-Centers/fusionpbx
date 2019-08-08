@@ -1469,7 +1469,7 @@ $default_login = ($_REQUEST['login'] == 'default') ? true : false;
 		font-family: <?php echo ($_SESSION['theme']['table_row_text_font']['text'] != '') ? $_SESSION['theme']['table_row_text_font']['text'] : 'arial'; ?>;
 		font-size: <?php echo ($_SESSION['theme']['table_row_text_size']['text'] != '') ? $_SESSION['theme']['table_row_text_size']['text'] : '12px'; ?>;
 		text-align: left;
-		padding: 4px 7px;
+		padding: 10px 7px 5px 10px;
 		}
 
 	.row_style1 {
@@ -1479,7 +1479,7 @@ $default_login = ($_REQUEST['login'] == 'default') ? true : false;
 		font-family: <?php echo ($_SESSION['theme']['table_row_text_font']['text'] != '') ? $_SESSION['theme']['table_row_text_font']['text'] : 'arial'; ?>;
 		font-size: <?php echo ($_SESSION['theme']['table_row_text_size']['text'] != '') ? $_SESSION['theme']['table_row_text_size']['text'] : '12px'; ?>;
 		text-align: left;
-		padding: 4px 7px;
+		padding: 10px 7px 5px 10px;
 		}
 
 	.row_style_slim {

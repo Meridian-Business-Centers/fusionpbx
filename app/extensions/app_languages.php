@@ -440,6 +440,7 @@ $text['label-users']['ro-ro'] = "";
 $text['label-users']['ru-ru'] = "Пользователи";
 $text['label-users']['sv-se'] = "Användar-lista";
 $text['label-users']['uk-ua'] = "Список користувачів";
+$text['label-sites']['en-us'] = "Site";
 
 $text['label-user_context']['en-us'] = "Context";
 $text['label-user_context']['ar-eg'] = "";

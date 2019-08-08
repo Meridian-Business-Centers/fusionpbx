@@ -34,6 +34,8 @@ echo "<link rel='stylesheet' type='text/css' href='<!--{project_path}-->/resourc
 echo "<link rel='stylesheet' type='text/css' href='<!--{project_path}-->/resources/bootstrap/css/bootstrap-colorpicker.min.css'>\n";
 echo "<link rel='stylesheet' type='text/css' href='<!--{project_path}-->/themes/".escape($_SESSION['domain']['template']['name'])."/css.php".($default_login ? '?login=default' : null)."'>\n";
 
+echo "<link href='https://fonts.googleapis.com/css?family=Cousine|Nunito+Sans|Inconsolata|Open+Sans|Roboto+Mono&display=swap' rel='stylesheet'>";
+
 //link to custom css file
 	if ($_SESSION['theme']['custom_css']['text'] != '') {
 		echo "<link rel='stylesheet' type='text/css' href='".escape($_SESSION['theme']['custom_css']['text'])."'>\n\n";
