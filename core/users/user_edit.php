@@ -663,6 +663,9 @@
 	if (permission_exists('user_add') || permission_exists('user_edit')) {
 		echo "	<input type='button' class='btn' style='margin-right: 10px;' onclick=\"window.location='users.php'\" value='".$text['button-back']."'>";
 	}
+	if (permission_exists('ticket_add') || permission_exists('ticket_edit')) {
+		echo "	<input type='button' class='btn' style='margin-right: 3px;' onclick=\"window.location='/app/tickets/tickets.php?user_uuid=".escape($user_uuid)."'\" value='".$text['button-tickets']."'>";
+	}
 	echo "	<input type='submit' class='btn' value='".$text['button-save']."'>";
 	echo "</div>\n";
 	echo "<b>".$text['header-user_edit']."</b><br />\n";

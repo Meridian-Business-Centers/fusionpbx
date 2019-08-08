@@ -17,7 +17,7 @@
 
 	The Initial Developer of the Original Code is
 	Mark J Crane <markjcrane@fusionpbx.com>
-	Portions created by the Initial Developer are Copyright (C) 2008-2018
+	Portions created by the Initial Developer are Copyright (C) 2008-2019
 	the Initial Developer. All Rights Reserved.
 
 	Contributor(s):
@@ -227,7 +227,7 @@
 		//start processing
 		$byte_count = 0;
 		while(!feof($file)) {
-			$log_line = fgets($file);
+			$log_line = escape(fgets($file));
 			$byte_count++;
 			$noprint = false;
 
@@ -259,7 +259,7 @@
 				}
 
 				if ($noprint !== true){
-					$array_output[] = "<span style='color: ".$default_color."; font-family: ".$default_font.";'>".escape($log_line)."</span><br>";
+					$array_output[] = "<span style='color: ".$default_color."; font-family: ".$default_font.";'>".$log_line."</span><br>";
 				}
 			}
 		}
