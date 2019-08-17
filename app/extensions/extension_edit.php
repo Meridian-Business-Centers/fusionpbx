@@ -70,6 +70,7 @@
 		}
 	}
 
+
 //get the http values and set them as php variables
 	if (count($_POST) > 0) {
 
@@ -135,6 +136,17 @@
 			
 			//change toll allow delimiter
 			$toll_allow = str_replace(',',':', $toll_allow);
+
+			//set some defaults
+			if($action == 'add'){
+				$accountcode = $extension;
+				$range = 1;
+				$effective_caller_id_number = $extension;
+				$directory_visible = false;
+				$directory_exten_visible = false;
+				$description = $effective_caller_id_name;
+			}
+
 	}
 
 //delete the user from the v_extension_users
@@ -892,7 +904,7 @@
 	echo "</td>\n";
 	echo "</tr>\n";
 
-	if (permission_exists('number_alias')) {
+	if (permission_exists('number_alias') && $action=='update') {
 		echo "<tr>\n";
 		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
 		echo "    ".$text['label-number_alias']."\n";
@@ -926,32 +938,6 @@
 		echo "<td class='vtable' align='left'>\n";
 		echo "    <select class='formfld' name='range'>\n";
 		echo "    <option value='1'>1</option>\n";
-		echo "    <option value='2'>2</option>\n";
-		echo "    <option value='3'>3</option>\n";
-		echo "    <option value='4'>4</option>\n";
-		echo "    <option value='5'>5</option>\n";
-		echo "    <option value='6'>6</option>\n";
-		echo "    <option value='7'>7</option>\n";
-		echo "    <option value='8'>8</option>\n";
-		echo "    <option value='9'>9</option>\n";
-		echo "    <option value='10'>10</option>\n";
-		echo "    <option value='15'>15</option>\n";
-		echo "    <option value='20'>20</option>\n";
-		echo "    <option value='25'>25</option>\n";
-		echo "    <option value='30'>30</option>\n";
-		echo "    <option value='35'>35</option>\n";
-		echo "    <option value='40'>40</option>\n";
-		echo "    <option value='45'>45</option>\n";
-		echo "    <option value='50'>50</option>\n";
-		echo "    <option value='75'>75</option>\n";
-		echo "    <option value='100'>100</option>\n";
-		echo "    <option value='150'>150</option>\n";
-		echo "    <option value='200'>200</option>\n";
-		echo "    <option value='250'>250</option>\n";
-		echo "    <option value='500'>500</option>\n";
-		echo "    <option value='750'>750</option>\n";
-		echo "    <option value='1000'>1000</option>\n";
-		echo "    <option value='5000'>5000</option>\n";
 		echo "    </select>\n";
 		echo "<br />\n";
 		echo $text['description-range']."<br />\n";
@@ -1019,7 +1005,7 @@
         echo "  </tr>";
 	}
 
-	if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails')) {
+	if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails') && $action=='update') {
 		echo "<tr>\n";
 		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
 		echo "    ".$text['label-voicemail_password']."\n";
@@ -1033,7 +1019,7 @@
 		echo "</tr>\n";
 	}
 
-	if (permission_exists('extension_accountcode')) {
+	if (permission_exists('extension_accountcode') && $action=='update') {
 			echo "<tr>\n";
 			echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
 			echo "    ".$text['label-accountcode']."\n";
@@ -1209,7 +1195,7 @@
 		echo "</tr>\n";
 	}
 
-	if (permission_exists("effective_caller_id_number")) {
+	if (permission_exists("effective_caller_id_number") && $action=='update') {
 		echo "<tr>\n";
 		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
 		echo "    ".$text['label-effective_caller_id_number']."\n";
@@ -1220,6 +1206,73 @@
 		echo $text['description-effective_caller_id_number']."\n";
 		echo "</td>\n";
 		echo "</tr>\n";
+	}
+	if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails')) {
+		echo "<tr>\n";
+		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "    ".$text['label-voicemail_enabled']."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "    <select class='formfld' name='voicemail_enabled'>\n";
+		if ($voicemail_enabled == "true") {
+			echo "    <option value='true' selected='selected'>".$text['label-true']."</option>\n";
+		}
+		else {
+			echo "    <option value='true'>".$text['label-true']."</option>\n";
+		}
+		if ($voicemail_enabled == "false") {
+			echo "    <option value='false' selected='selected'>".$text['label-false']."</option>\n";
+		}
+		else {
+			echo "    <option value='false'>".$text['label-false']."</option>\n";
+		}
+		echo "    </select>\n";
+		echo "<br />\n";
+		echo $text['description-voicemail_enabled']."\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+
+		echo "<tr>\n";
+		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "    ".$text['label-voicemail_mail_to']."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "    <input class='formfld' type='text' name='voicemail_mail_to' maxlength='255' value=\"".escape($voicemail_mail_to)."\">\n";
+		echo "<br />\n";
+		echo $text['description-voicemail_mail_to']."\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+
+		echo "<tr>\n";
+		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "    ".$text['label-voicemail_file']."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "    <select class='formfld' name='voicemail_file' id='voicemail_file' onchange=\"if (this.selectedIndex != 2) { document.getElementById('voicemail_local_after_email').selectedIndex = 0; }\">\n";
+		echo "    	<option value='' ".(($voicemail_file == "listen") ? "selected='selected'" : null).">".$text['option-voicemail_file_listen']."</option>\n";
+		echo "    	<option value='link' ".(($voicemail_file == "link") ? "selected='selected'" : null).">".$text['option-voicemail_file_link']."</option>\n";
+		echo "    	<option value='attach' ".(($voicemail_file == "attach") ? "selected='selected'" : null).">".$text['option-voicemail_file_attach']."</option>\n";
+		echo "    </select>\n";
+		echo "<br />\n";
+		echo $text['description-voicemail_file']."\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+
+		if (permission_exists('voicemail_local_after_email')) {
+			echo "<tr>\n";
+			echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+			echo "    ".$text['label-voicemail_local_after_email']."\n";
+			echo "</td>\n";
+			echo "<td class='vtable' align='left'>\n";
+			echo "    <select class='formfld' name='voicemail_local_after_email' id='voicemail_local_after_email' onchange=\"if (this.selectedIndex == 1) { document.getElementById('voicemail_file').selectedIndex = 2; }\">\n";
+			echo "    	<option value='true' ".(($voicemail_local_after_email == "true") ? "selected='selected'" : null).">".$text['label-true']."</option>\n";
+			echo "    	<option value='false' ".(($voicemail_local_after_email == "false") ? "selected='selected'" : null).">".$text['label-false']."</option>\n";
+			echo "    </select>\n";
+			echo "<br />\n";
+			echo $text['description-voicemail_local_after_email']."\n";
+			echo "</td>\n";
+			echo "</tr>\n";
+		}
 	}
 
 	if (permission_exists("outbound_caller_id_name")) {
@@ -1470,73 +1523,73 @@
 	echo "</td>\n";
 	echo "</tr>\n";
 
-	if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails')) {
-		echo "<tr>\n";
-		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-		echo "    ".$text['label-voicemail_enabled']."\n";
-		echo "</td>\n";
-		echo "<td class='vtable' align='left'>\n";
-		echo "    <select class='formfld' name='voicemail_enabled'>\n";
-		if ($voicemail_enabled == "true") {
-			echo "    <option value='true' selected='selected'>".$text['label-true']."</option>\n";
-		}
-		else {
-			echo "    <option value='true'>".$text['label-true']."</option>\n";
-		}
-		if ($voicemail_enabled == "false") {
-			echo "    <option value='false' selected='selected'>".$text['label-false']."</option>\n";
-		}
-		else {
-			echo "    <option value='false'>".$text['label-false']."</option>\n";
-		}
-		echo "    </select>\n";
-		echo "<br />\n";
-		echo $text['description-voicemail_enabled']."\n";
-		echo "</td>\n";
-		echo "</tr>\n";
+	// if (permission_exists('voicemail_edit') && is_dir($_SERVER["DOCUMENT_ROOT"].PROJECT_PATH.'/app/voicemails')) {
+	// 	echo "<tr>\n";
+	// 	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+	// 	echo "    ".$text['label-voicemail_enabled']."\n";
+	// 	echo "</td>\n";
+	// 	echo "<td class='vtable' align='left'>\n";
+	// 	echo "    <select class='formfld' name='voicemail_enabled'>\n";
+	// 	if ($voicemail_enabled == "true") {
+	// 		echo "    <option value='true' selected='selected'>".$text['label-true']."</option>\n";
+	// 	}
+	// 	else {
+	// 		echo "    <option value='true'>".$text['label-true']."</option>\n";
+	// 	}
+	// 	if ($voicemail_enabled == "false") {
+	// 		echo "    <option value='false' selected='selected'>".$text['label-false']."</option>\n";
+	// 	}
+	// 	else {
+	// 		echo "    <option value='false'>".$text['label-false']."</option>\n";
+	// 	}
+	// 	echo "    </select>\n";
+	// 	echo "<br />\n";
+	// 	echo $text['description-voicemail_enabled']."\n";
+	// 	echo "</td>\n";
+	// 	echo "</tr>\n";
 
-		echo "<tr>\n";
-		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-		echo "    ".$text['label-voicemail_mail_to']."\n";
-		echo "</td>\n";
-		echo "<td class='vtable' align='left'>\n";
-		echo "    <input class='formfld' type='text' name='voicemail_mail_to' maxlength='255' value=\"".escape($voicemail_mail_to)."\">\n";
-		echo "<br />\n";
-		echo $text['description-voicemail_mail_to']."\n";
-		echo "</td>\n";
-		echo "</tr>\n";
+	// 	echo "<tr>\n";
+	// 	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+	// 	echo "    ".$text['label-voicemail_mail_to']."\n";
+	// 	echo "</td>\n";
+	// 	echo "<td class='vtable' align='left'>\n";
+	// 	echo "    <input class='formfld' type='text' name='voicemail_mail_to' maxlength='255' value=\"".escape($voicemail_mail_to)."\">\n";
+	// 	echo "<br />\n";
+	// 	echo $text['description-voicemail_mail_to']."\n";
+	// 	echo "</td>\n";
+	// 	echo "</tr>\n";
 
-		echo "<tr>\n";
-		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-		echo "    ".$text['label-voicemail_file']."\n";
-		echo "</td>\n";
-		echo "<td class='vtable' align='left'>\n";
-		echo "    <select class='formfld' name='voicemail_file' id='voicemail_file' onchange=\"if (this.selectedIndex != 2) { document.getElementById('voicemail_local_after_email').selectedIndex = 0; }\">\n";
-		echo "    	<option value='' ".(($voicemail_file == "listen") ? "selected='selected'" : null).">".$text['option-voicemail_file_listen']."</option>\n";
-		echo "    	<option value='link' ".(($voicemail_file == "link") ? "selected='selected'" : null).">".$text['option-voicemail_file_link']."</option>\n";
-		echo "    	<option value='attach' ".(($voicemail_file == "attach") ? "selected='selected'" : null).">".$text['option-voicemail_file_attach']."</option>\n";
-		echo "    </select>\n";
-		echo "<br />\n";
-		echo $text['description-voicemail_file']."\n";
-		echo "</td>\n";
-		echo "</tr>\n";
+	// 	echo "<tr>\n";
+	// 	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+	// 	echo "    ".$text['label-voicemail_file']."\n";
+	// 	echo "</td>\n";
+	// 	echo "<td class='vtable' align='left'>\n";
+	// 	echo "    <select class='formfld' name='voicemail_file' id='voicemail_file' onchange=\"if (this.selectedIndex != 2) { document.getElementById('voicemail_local_after_email').selectedIndex = 0; }\">\n";
+	// 	echo "    	<option value='' ".(($voicemail_file == "listen") ? "selected='selected'" : null).">".$text['option-voicemail_file_listen']."</option>\n";
+	// 	echo "    	<option value='link' ".(($voicemail_file == "link") ? "selected='selected'" : null).">".$text['option-voicemail_file_link']."</option>\n";
+	// 	echo "    	<option value='attach' ".(($voicemail_file == "attach") ? "selected='selected'" : null).">".$text['option-voicemail_file_attach']."</option>\n";
+	// 	echo "    </select>\n";
+	// 	echo "<br />\n";
+	// 	echo $text['description-voicemail_file']."\n";
+	// 	echo "</td>\n";
+	// 	echo "</tr>\n";
 
-		if (permission_exists('voicemail_local_after_email')) {
-			echo "<tr>\n";
-			echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-			echo "    ".$text['label-voicemail_local_after_email']."\n";
-			echo "</td>\n";
-			echo "<td class='vtable' align='left'>\n";
-			echo "    <select class='formfld' name='voicemail_local_after_email' id='voicemail_local_after_email' onchange=\"if (this.selectedIndex == 1) { document.getElementById('voicemail_file').selectedIndex = 2; }\">\n";
-			echo "    	<option value='true' ".(($voicemail_local_after_email == "true") ? "selected='selected'" : null).">".$text['label-true']."</option>\n";
-			echo "    	<option value='false' ".(($voicemail_local_after_email == "false") ? "selected='selected'" : null).">".$text['label-false']."</option>\n";
-			echo "    </select>\n";
-			echo "<br />\n";
-			echo $text['description-voicemail_local_after_email']."\n";
-			echo "</td>\n";
-			echo "</tr>\n";
-		}
-	}
+	// 	if (permission_exists('voicemail_local_after_email')) {
+	// 		echo "<tr>\n";
+	// 		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+	// 		echo "    ".$text['label-voicemail_local_after_email']."\n";
+	// 		echo "</td>\n";
+	// 		echo "<td class='vtable' align='left'>\n";
+	// 		echo "    <select class='formfld' name='voicemail_local_after_email' id='voicemail_local_after_email' onchange=\"if (this.selectedIndex == 1) { document.getElementById('voicemail_file').selectedIndex = 2; }\">\n";
+	// 		echo "    	<option value='true' ".(($voicemail_local_after_email == "true") ? "selected='selected'" : null).">".$text['label-true']."</option>\n";
+	// 		echo "    	<option value='false' ".(($voicemail_local_after_email == "false") ? "selected='selected'" : null).">".$text['label-false']."</option>\n";
+	// 		echo "    </select>\n";
+	// 		echo "<br />\n";
+	// 		echo $text['description-voicemail_local_after_email']."\n";
+	// 		echo "</td>\n";
+	// 		echo "</tr>\n";
+	// 	}
+	// }
 
 	if (permission_exists('extension_missed_call')) {
 		echo "<tr>\n";
