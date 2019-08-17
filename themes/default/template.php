@@ -61,6 +61,11 @@ echo "<script language='JavaScript' type='text/javascript' src='<!--{project_pat
 echo "<script language='JavaScript' type='text/javascript' src='<!--{project_path}-->/resources/bootstrap/js/bootstrap-colorpicker.js'></script>\n";
 echo "<script language='JavaScript' type='text/javascript' src='<!--{project_path}-->/resources/bootstrap/js/bootstrap-pwstrength.min.js'></script>\n";
 
+//load select2
+?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+<?php
 //web font loader
 	if ($_SESSION['theme']['font_loader']['text'] == 'true') {
 		if ($_SESSION['theme']['font_retrieval']['text'] != 'asynchronous') {
@@ -771,6 +776,15 @@ else {
 	unset($_SESSION['background_image']);
 
 }
+
+?>
+<script language="JavasScript" type="text/javascript">
+	$(document).ready(function() {
+    	$('#dialplan_details_0_dialplan_detail_data').select2();
+	});
+</script>
+
+<?php
 
 echo "</body>\n";
 echo "</html>\n";

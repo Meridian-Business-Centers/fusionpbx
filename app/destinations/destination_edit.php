@@ -124,6 +124,10 @@
 			$_POST["destination_alternate_data"] = $destination_alternate_data;
 		//unset the db_destination_number
 			unset($_POST["db_destination_number"]);
+		if($_POST["easy_destination"] == "to_reception"){
+			$destination_cid_name_prefix = $destination_number;
+		}	
+
 	}
 
 //process the http post
@@ -184,6 +188,12 @@
 			if ($destination_type == 'inbound' || $destination_type == 'local') {
 				//get the array
 					$dialplan_details = $_POST["dialplan_details"];
+					if($_POST["easy_destination"] == "to_extension"){
+						$dialplan_details[0]["dialplan_detail_data"] = "transfer:".$destination_number." XML sip.worksuites.net";
+					}
+					if($_POST["easy_destination"] == "to_reception"){
+						$dialplan_details[0]["dialplan_detail_data"] = "transfer:7000 XML sip.worksuites.net";
+					}
 
 				//array cleanup
 					foreach ($dialplan_details as $index => $row) {
@@ -896,14 +906,46 @@
 	echo "</td>\n";
 	echo "</tr>\n";
 
+	//customized destination field
 	echo "<tr>\n";
 	echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
-	echo "	".$text['label-destination_number']."\n";
+	echo "	"."Phone Number"."\n";
 	echo "</td>\n";
 	echo "<td class='vtable' align='left'>\n";
 	echo "	<input class='formfld' type='text' name='destination_number' maxlength='255' value=\"".escape($destination_number)."\" required='required'>\n";
 	echo "<br />\n";
-	echo $text['description-destination_number']."\n";
+	echo "Enter the 10 digit phone number. Ex: 2145551234"."\n";
+	echo "</td>\n";
+	echo "</tr>\n";
+
+	// echo "<tr>\n";
+	// echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
+	// echo "	".$text['label-destination_number']."\n";
+	// echo "</td>\n";
+	// echo "<td class='vtable' align='left'>\n";
+	// echo "	<input class='formfld' type='text' name='destination_number' maxlength='255' value=\"".escape($destination_number)."\" required='required'>\n";
+	// echo "<br />\n";
+	// echo $text['description-destination_number']."\n";
+	// echo "</td>\n";
+	// echo "</tr>\n";
+
+	//customized destination field
+	echo "<tr>\n";
+	echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
+	echo "	"."Destination"."\n";
+	echo "</td>\n";
+	echo "<td class='vtable' align='left'>\n";
+	?>
+	<select class='formfld' name='easy_destination'>
+		<option value='none' name='Reception Answering'>Select here, or pick an action below.</option>
+		<option value='to_extension' name='Send to extension directly'>Send to extension</option>
+		<option value='to_reception' name='Reception Answering'>Reception Answering</option>
+	</select>
+
+	<?php
+	echo "\n";
+	echo "<br />\n";
+	echo "Enter the 10 digit phone number. Ex: 2145551234"."\n";
 	echo "</td>\n";
 	echo "</tr>\n";
 
@@ -1043,7 +1085,7 @@
 	echo "<td class='vtable' align='left'>\n";
 	echo "	<input class='formfld' type='text' name='destination_cid_name_prefix' maxlength='255' value=\"".escape($destination_cid_name_prefix)."\">\n";
 	echo "<br />\n";
-	echo $text['description-destination_cid_name_prefix']."\n";
+	echo $text['description-destination_cid_name_prefix']." This is the screen pop used for front desk call answering.\n";
 	echo "</td>\n";
 	echo "</tr>\n";
 
@@ -1070,23 +1112,25 @@
 		echo "</td>\n";
 		echo "</tr>\n";
 	}
+	if($action=='update'){
+		echo "<tr id='tr_account_code'>\n";
+		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "	".$text['label-account_code']."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "	<input class='formfld' type='text' name='destination_accountcode' maxlength='255' value=\"".escape($destination_accountcode)."\">\n";
+		echo "<br />\n";
+		echo $text['description-account_code']."\n";
+		echo "</td>\n";
+	}
 
-	echo "<tr id='tr_account_code'>\n";
-	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-	echo "	".$text['label-account_code']."\n";
-	echo "</td>\n";
-	echo "<td class='vtable' align='left'>\n";
-	echo "	<input class='formfld' type='text' name='destination_accountcode' maxlength='255' value=\"".escape($destination_accountcode)."\">\n";
-	echo "<br />\n";
-	echo $text['description-account_code']."\n";
-	echo "</td>\n";
 
 	echo "<tr>\n";
 	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
 	echo "	".$text['label-usage']."\n";
 	echo "</td>\n";
 	echo "<td class='vtable' align='left'>\n";
-	echo "	<label><input type='checkbox' name='destination_type_voice' id='destination_type_voice' value='1' ".($destination_type_voice ? "checked='checked'" : null)."> ".$text['label-voice']."</label>&nbsp;\n";
+	echo "	<label><input type='checkbox' name='destination_type_voice' id='destination_type_voice' value='1' ".($destination_type_voice ? "checked='checked'" : null)."> "."Phone"."</label>&nbsp;\n";
 	echo "	<label><input type='checkbox' name='destination_type_fax' id='destination_type_fax' value='1' ".($destination_type_fax ? "checked='checked'" : null)."> ".$text['label-fax']."</label>&nbsp;\n";
 	echo "	<label><input type='checkbox' name='destination_type_text' id='destination_type_text' value='1' ".($destination_type_text ? "checked='checked'" : null)."> ".$text['label-text']."</label>\n";
 	echo "<br />\n";
