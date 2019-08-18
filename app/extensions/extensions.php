@@ -82,6 +82,11 @@
 	$database = new database;
 	$total_extensions = $database->select($sql_1, $parameters, 'column');
 
+//get sites
+	$sql_sites = "select * from v_sites ";
+	$database = new database;
+	$sites = $database->select($sql_sites);
+
 //get total numeric extension count
 	if ($db_type == "pgsql" || $db_type == "mysql") {
 		$sql_2 = $sql_1." and extension ~ '^[0-9]+$' ";
@@ -104,6 +109,10 @@
 
 //get the extensions
 	$sql_3 = str_replace('count(*)', '*', $sql_1);
+	if ($_GET['site_uuid']) {
+		$sql_3 .= " and site_uuid = :site_uuid";
+		$parameters['site_uuid'] = $_GET['site_uuid'];
+	}
 	$sql_3 .= $order_by == '' || $order_by == 'extension' ? ' order by '.$order_text.' '.$order.' ' : order_by($order_by, $order);
 	$sql_3 .= limit_offset($rows_per_page, $offset);
 	$database = new database;
@@ -123,6 +132,28 @@
 	echo "	</td>\n";
 	echo "		<form method='get' action=''>\n";
 	echo "			<td style='vertical-align: top; text-align: right; white-space: nowrap;'>\n";
+	
+	echo " <select name='site_filter' id='site_filter' >";
+	echo "    <option value=''>Filter by site</options>";
+	echo "    <option value='all'>All Sites</options>";
+		foreach($sites as $site){
+			echo "<option value='".$site['site_uuid']."'>".$site['sitename']."</option>";
+		}
+	echo "</select>";
+
+	?>
+	<script>
+		$('#site_filter').change(function() {
+			if($(this).val() == 'all') {
+				window.location='extensions.php';
+			} else {
+				window.location='extensions.php?site_uuid='+$(this).val();
+
+			}
+		});
+	</script>
+
+	<?php
 	if (permission_exists('extension_all')) {
 		if ($_GET['show'] == 'all') {
 			echo "	<input type='hidden' name='show' value='all'>";
@@ -131,6 +162,7 @@
 			echo "	<input type='button' class='btn' value='".$text['button-show_all']."' onclick=\"window.location='extensions.php?show=all';\">\n";
 		}
 	}
+
 	if (permission_exists('extension_import')) {
 		echo 				"<input type='button' class='btn' alt='".$text['button-import']."' onclick=\"window.location='extension_imports.php'\" value='".$text['button-import']."'>\n";
 	}
@@ -238,7 +270,6 @@
 
 			echo "	<td valign='top' class='".$row_style[$c]."'>".escape(ucwords($row['enabled']))."</td>\n";
 			echo "	<td valign='top' class='row_stylebg' width='30%'>".escape($row['description'])."&nbsp;</td>\n";
-
 			echo "	<td class='list_control_icons'>";
 			if (permission_exists('extension_edit')) {
 				echo "<a href='extension_edit.php?id=".escape($row['extension_uuid'])."' alt='".$text['button-edit']."'>$v_link_label_edit</a>";
