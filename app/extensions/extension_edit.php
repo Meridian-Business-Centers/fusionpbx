@@ -149,6 +149,10 @@
 				$description = $effective_caller_id_name;
 			}
 
+			if($reception_screen == true && $screen_pop == NULL) {
+				$screen_pop = $extension;
+			}
+
 	}
 
 //delete the user from the v_extension_users
@@ -1037,7 +1041,7 @@
 
     if (permission_exists('site_edit')) {
         echo "  <tr>";
-        echo "          <td class='vncell' valign='top'>".$text['label-sites']."</td>";
+        echo "          <td class='vncell' valign='top'>"."Location/Site"."</td>";
         echo "          <td class='vtable'>";
         echo "                  <select name='site_uuid' id='site_uuid' class='formfld' style='width: auto;'>\n";
         foreach($sites as $field) {
@@ -1052,7 +1056,7 @@
         echo "                  </select>";
 
         echo "                  <br>\n";
-        echo "                  ".$text['description-site_list']."\n";
+        echo "                  "."The WORKSUITES location where this extension is used."."\n";
         echo "                  <br />\n";
         echo "          </td>";
         echo "  </tr>";
