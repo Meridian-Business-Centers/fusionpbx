@@ -149,7 +149,7 @@
 				$description = $effective_caller_id_name;
 			}
 
-			if($reception_screen == true && $screen_pop == NULL) {
+			if($reception_screen == 'true' && $screen_pop == NULL) {
 				$screen_pop = $extension;
 			}
 
