@@ -103,6 +103,7 @@
         echo "<tr>\n";
         echo th_order_by('sitename', $text['label-name'], $order_by, $order);
         echo th_order_by('operator', $text['label-operator'], $order_by, $order);
+        echo th_order_by('site_uuid', 'site_uuid', $order_by, $order);
         echo "<td class='list_control_icons'>";
         if (permission_exists('site_add')) {
                 echo "<a href='sites_edit.php' alt='".$text['button-add']."'>$v_link_label_add</a>";
@@ -114,7 +115,7 @@
         if ($result_count > 0 ) {
                 foreach($result as $row) {
 			if ($row['site_uuid'] != 'b48409dc-2fae-4e4e-9dba-05009b6ff40a'){
-                        $tr_link = (permission_exists('site_edit')) ? "href='sites_edit.php?id=".$row['site_uuid']."'" : null;
+                        // $tr_link = (permission_exists('site_edit')) ? "href='sites_edit.php?id=".$row['site_uuid']."'" : null;
                         echo "<tr ".$tr_link.">\n";
                         echo "  <td valign='top' class='".$row_style[$c]."'>";
                         if (permission_exists('site_edit')) {
@@ -133,7 +134,14 @@
                                 echo $row['operator'];
                         }
                         echo "  </td>\n";
-
+						echo "  <td valign='top' class='".$row_style[$c]."'>";
+                        if (permission_exists('site_edit')) {
+                                echo $row['site_uuid'];
+                        }
+                        else {
+                                echo $row['site_uuid'];
+                        }
+                        echo "  </td>\n";
                         echo "  <td class='list_control_icons'>";
                         if (permission_exists('site_edit')) {
                                 echo "<a href='sites_edit.php?id=".$row['site_uuid']."' alt='".$text['button-edit']."'>$v_link_label_edit</a>";

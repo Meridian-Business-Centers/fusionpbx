@@ -99,7 +99,7 @@ $xml .= "</AccountConfig>";
 
 //build the QR code data for Acrobits
 if (is_uuid($_GET['id'])) {
-$qrdata = "csc:".$username.":".$field['password']."@WORKSUITES*";
+$qrdata = "csc:".$username.":".$field['password']."@WORKSUITES";
 }
 
 //debian
@@ -162,7 +162,7 @@ echo "</tr>\n";
 echo "</table>";
 echo "</form>";
 echo "<br />";
-
+echo $qrdata;
 //stream the file
 // if (is_uuid($_GET['id'])) {
 // $include_path = get_include_path();
