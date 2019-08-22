@@ -125,6 +125,8 @@
 			$enabled = $_POST["enabled"];
 			$description = $_POST["description"];
 			$site_uuid = $_POST["site_uuid"];
+			$reception_screen = $_POST["reception_screen"];
+			$screen_pop = $_POST["screen_pop"];
 
 			$voicemail_id = $extension;
 			if (permission_exists('number_alias') && strlen($number_alias) > 0) {
@@ -414,6 +416,8 @@
 									$array["extensions"][$i]["enabled"] = $enabled;
 									$array["extensions"][$i]["description"] = $description;
 									$array["extensions"][$i]["site_uuid"] = $site_uuid;
+									$array["extensions"][$i]["reception_screen"] = $reception_screen;
+									$array["extensions"][$i]["screen_pop"] = $screen_pop;
 
 							}
 
@@ -703,6 +707,9 @@
 			$enabled = $row["enabled"];
 			$description = $row["description"];
 			$site_uuid = $row["site_uuid"];
+			$reception_screen = $row["reception_screen"];
+			$screen_pop = $row["screen_pop"];
+			
 		}
 		unset($sql, $parameters, $row);
 
@@ -903,6 +910,52 @@
 	echo $text['description-extension']."\n";
 	echo "</td>\n";
 	echo "</tr>\n";
+
+	echo "<tr>\n";
+	echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
+	echo "    "."Screen Pop"."\n";
+	echo "</td>\n";
+	echo "<td class='vtable' align='left'>\n";
+	echo "    <input class='formfld' type='text' name='screen_pop' maxlength='10' value=\"".escape($screen_pop)."\">\n";
+	echo "<br />\n";
+	echo "Set the screen pop for front desk answering"."\n";
+	echo "</td>\n";
+	echo "</tr>\n";
+
+	if ($action == "add") {
+		echo "<tr>\n";
+		echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "    "."Reception Answering/Screening"."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "    <select class='formfld' name='reception_screen'>\n";
+		echo "    <option value='true'>Enabled - calls answered by reception</option>\n";
+		echo "    <option value='false'>Disabled - calls ring to extension directly</option>\n";
+		echo "    </select>\n";
+		echo "<br />\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+	}
+
+	if ($action == "update") {
+		echo "<tr>\n";
+		echo "<td class='vncellreq' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "    "."Reception Answering/Screening"."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "    <select class='formfld' name='reception_screen'>\n";
+		if($reception_screen == true) {
+			echo "    <option value='true' selected='true'>Enabled - calls answered by reception</option>\n";
+			echo "    <option value='false'>Disabled - calls ring to extension directly</option>\n";			
+		} else {
+			echo "    <option value='true'>Enabled - calls answered by reception</option>\n";
+			echo "    <option value='false' selected='true'>Disabled - calls ring to extension directly</option>\n";			
+		}
+		echo "    </select>\n";
+		echo "<br />\n";
+		echo "</td>\n";
+		echo "</tr>\n";
+	}
 
 	if (permission_exists('number_alias') && $action=='update') {
 		echo "<tr>\n";
