@@ -544,7 +544,7 @@
 <Resync_Random_Delay group="Provisioning/Configuration_Profile">2</Resync_Random_Delay>
 <Resync_At__HHmm_ group="Provisioning/Configuration_Profile"/>
 <Resync_At_Random_Delay group="Provisioning/Configuration_Profile">600</Resync_At_Random_Delay>
-<Resync_Periodic group="Provisioning/Configuration_Profile">3600</Resync_Periodic>
+<Resync_Periodic group="Provisioning/Configuration_Profile">0</Resync_Periodic>
 <Resync_Error_Retry_Delay group="Provisioning/Configuration_Profile">3600</Resync_Error_Retry_Delay>
 <Forced_Resync_Delay group="Provisioning/Configuration_Profile">14400</Forced_Resync_Delay>
 <Resync_From_SIP group="Provisioning/Configuration_Profile">Yes</Resync_From_SIP>
@@ -690,7 +690,7 @@
 <DTMF_Playback_Length group="Regional/Miscellaneous">.1</DTMF_Playback_Length>
 <Inband_DTMF_Boost group="Regional/Miscellaneous">12dB</Inband_DTMF_Boost>
 <Show_DTMF_Digits_When_Connected group="Regional/Miscellaneous">No</Show_DTMF_Digits_When_Connected>
-<Station_Name group="Phone/General"> $USER {$account.1.display_name}</Station_Name>
+<Station_Name group="Phone/General">{$account.1.display_name}</Station_Name>
 <Station_Display_Name group="Phone/General"/>
 <Voice_Mail_Number group="Phone/General">*97</Voice_Mail_Number>
 <Bluetooth_Mode group="Phone/BluePhone">Phone</Bluetooth_Mode>
