@@ -781,6 +781,7 @@ else {
 <script language="JavasScript" type="text/javascript">
 	$(document).ready(function() {
     	$('#dialplan_details_0_dialplan_detail_data').select2();
+    	$('.select2js').select2();
 	});
 </script>
 

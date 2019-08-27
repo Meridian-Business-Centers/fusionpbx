@@ -894,17 +894,19 @@
 	echo $text['description-destination_type']."\n";
 	echo "</td>\n";
 	echo "</tr>\n";
-
-	echo "<tr>\n";
-	echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
-	echo "	".$text['label-destination_prefix']."\n";
-	echo "</td>\n";
-	echo "<td class='vtable' align='left'>\n";
-	echo "	<input class='formfld' type='text' name='destination_prefix' maxlength='32' value=\"".escape($destination_prefix)."\">\n";
-	echo "<br />\n";
-	echo $text['description-destination_prefix']."\n";
-	echo "</td>\n";
-	echo "</tr>\n";
+	if(permission_exists('destination_all')){
+		echo "<tr>\n";
+		echo "<td class='vncell' valign='top' align='left' nowrap='nowrap'>\n";
+		echo "	".$text['label-destination_prefix']."\n";
+		echo "</td>\n";
+		echo "<td class='vtable' align='left'>\n";
+		echo "	<input class='formfld' type='text' name='destination_prefix' maxlength='32' value=\"".escape($destination_prefix)."\">\n";
+		echo "<br />\n";
+		echo $text['description-destination_prefix']."\n";
+		echo "</td>\n";
+		echo "</tr>\n";	
+	}
+	
 
 	//customized destination field
 	echo "<tr>\n";
@@ -938,7 +940,6 @@
 	?>
 	<select class='formfld' name='easy_destination'>
 		<option value='none' name='Reception Answering'>Select here, or pick an action below.</option>
-		<option value='to_extension' name='Send to extension directly'>Send to extension</option>
 		<option value='to_reception' name='Reception Answering'>Reception Answering</option>
 	</select>
 

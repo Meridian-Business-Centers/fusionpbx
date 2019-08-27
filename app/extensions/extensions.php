@@ -133,27 +133,6 @@
 	echo "		<form method='get' action=''>\n";
 	echo "			<td style='vertical-align: top; text-align: right; white-space: nowrap;'>\n";
 	
-	echo " <select name='site_filter' id='site_filter' >";
-	echo "    <option value=''>Filter by site</options>";
-	echo "    <option value='all'>All Sites</options>";
-		foreach($sites as $site){
-			echo "<option value='".$site['site_uuid']."'>".$site['sitename']."</option>";
-		}
-	echo "</select>";
-
-	?>
-	<script>
-		$('#site_filter').change(function() {
-			if($(this).val() == 'all') {
-				window.location='extensions.php';
-			} else {
-				window.location='extensions.php?site_uuid='+$(this).val();
-
-			}
-		});
-	</script>
-
-	<?php
 	if (permission_exists('extension_all')) {
 		if ($_GET['show'] == 'all') {
 			echo "	<input type='hidden' name='show' value='all'>";
